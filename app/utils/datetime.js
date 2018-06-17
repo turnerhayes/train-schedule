@@ -9,10 +9,10 @@ import assert from 'assert';
  */
 function zeroPad(num) {
   if (num >= 10) {
-    return num + '';
+    return `${num}`;
   }
 
-  return '0' + num;
+  return `0${num}`;
 }
 
 export function formatTime({
@@ -26,8 +26,10 @@ export function formatTime({
   );
 
   if (date) {
+    /* eslint-disable no-param-reassign */
     hours = date.getHours();
     minutes = date.getMinutes();
+    /* eslint-enable no-param-reassign */
   }
 
   return `${hours % 12}:${zeroPad(minutes)} ${

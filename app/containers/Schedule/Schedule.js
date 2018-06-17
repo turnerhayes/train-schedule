@@ -12,7 +12,7 @@ import saga from './saga';
 
 function mapStateToProps(state) {
   let scheduleItems = selectors.getSchedule(state);
-  let lastUpdated = selectors.getLastScheduleUpdate(state);
+  const lastUpdated = selectors.getLastScheduleUpdate(state);
 
   if (scheduleItems) {
     scheduleItems = scheduleItems.sort(

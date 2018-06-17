@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import Schedule from 'containers/Schedule';
 import Clock from 'components/Clock';
 import DateDisplay from 'components/DateDisplay';
-import messages from './messages';
 
 const GridContainer = styled.div`
   display: grid;
@@ -27,6 +26,7 @@ const DateDisplayContainer = styled.div`
 const ClockContainer = styled.div`
   grid-area: clock;
   justify-self: end;
+  text-align: right;
 `;
 
 const ScheduleContainer = styled.div`
@@ -55,13 +55,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <CurrentTimeLabel>
             Current Time
             </CurrentTimeLabel>
-            <Clock
-            />
+            <Clock />
           </ClockContainer>
-          <ScheduleContainer
-          >
-            <Schedule
-            />
+          <ScheduleContainer >
+            <Schedule />
           </ScheduleContainer>
         </GridContainer>
       </article>

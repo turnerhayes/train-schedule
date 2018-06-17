@@ -9,7 +9,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 
@@ -31,9 +30,7 @@ export default function App() {
       >
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
-      <Switch>
-        <Route path="" component={HomePage} />
-      </Switch>
+      <HomePage />
     </AppWrapper>
   );
 }

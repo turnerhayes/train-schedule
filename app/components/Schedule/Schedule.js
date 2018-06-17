@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 
@@ -14,7 +13,7 @@ const CHECK_INTERVAL_IN_MILLISECONDS = 1000 * 60;
 const STATUS_BACKGROUND_COLORS = {
   'All Aboard': 'orange',
   'Now Boarding': 'lightgreen',
-  'Delayed': 'red',
+  Delayed: 'red',
 };
 
 const cellStyles = `
@@ -43,7 +42,11 @@ const TableBody = styled.tbody`
 
 const TableBodyRow = styled.tr`
   background-color: ${(props) => STATUS_BACKGROUND_COLORS[props.status]}
-`
+`;
+
+const LastUpdatedNotice = styled.figcaption`
+  font-size: 0.7em;
+`;
 
 class Schedule extends React.PureComponent {
   static propTypes = {
@@ -74,38 +77,53 @@ class Schedule extends React.PureComponent {
   )
 
   renderItems = () => this.props.scheduleItems.map(
-    (item, index) => (
-      <TableBodyRow
-        key={index}
-        status={item.get('Status')}
-      >
-        <TableCell
-          key="Time"
+    (item) => {
+      // Clone time so that we don't modify the item's time object
+      // if there's a Lateness to add
+      const time = new Date(item.get('ScheduledTime'));
+
+      if (item.get('Lateness')) {
+        time.setSeconds(time.getSeconds() + item.get('Lateness'));
+      }
+
+      return (
+        <TableBodyRow
+          key={`${item.get('Trip')}-${item.get('Time')}`}
+          status={item.get('Status')}
         >
-          {formatTime({ date: item.get('ScheduledTime') })}
-        </TableCell>
-        <TableCell
-          key="Destination"
-        >
-          {item.get('Destination')}
-        </TableCell>
-        <TableCell
-          key="Train #"
-        >
-          {item.get('Trip')}
-        </TableCell>
-        <TableCell
-          key="Track #"
-        >
-          {item.get('Track') || 'TBD'}
-        </TableCell>
-        <TableCell
-          key="Status"
-        >
-          {item.get('Status')}
-        </TableCell>
-      </TableBodyRow>
-    )
+          <TableCell
+            key="Time"
+          >
+            {formatTime({ date: time })}
+          </TableCell>
+          <TableCell
+            key="Origin"
+          >
+            {item.get('Origin')}
+          </TableCell>
+          <TableCell
+            key="Destination"
+          >
+            {item.get('Destination')}
+          </TableCell>
+          <TableCell
+            key="Train #"
+          >
+            {item.get('Trip')}
+          </TableCell>
+          <TableCell
+            key="Track #"
+          >
+            {item.get('Track') || 'TBD'}
+          </TableCell>
+          <TableCell
+            key="Status"
+          >
+            {item.get('Status')}
+          </TableCell>
+        </TableBodyRow>
+      );
+    }
   ).toArray()
 
   render() {
@@ -126,6 +144,11 @@ class Schedule extends React.PureComponent {
                 key="Time"
               >
                 Time
+              </TableHeaderCell>
+              <TableHeaderCell
+                key="Origin"
+              >
+                Origin
               </TableHeaderCell>
               <TableHeaderCell
                 key="Destination"
@@ -155,9 +178,9 @@ class Schedule extends React.PureComponent {
             {this.renderItems()}
           </TableBody>
         </Table>
-        <figcaption>
+        <LastUpdatedNotice>
           Last updated: {formatTime({ date: this.props.lastUpdated })}
-        </figcaption>
+        </LastUpdatedNotice>
       </div>
     );
   }

@@ -24,47 +24,17 @@ const DAY_NAMES = [
  */
 function zeroPad(num) {
   if (num >= 10) {
-    return num + '';
+    return `${num}`;
   }
 
-  return '0' + num;
+  return `0${num}`;
 }
 
 export default class DateDisplay extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    const date = new Date();
-
     this.state = this.getDateState();
-  }
-
-  /**
-   * Gets the current local time in a format to be put into state.
-   *
-   * @returns {{dayOfWeek: Number, day: Number, month: Number, year: Number}} the day index
-   *  in the week, day of month, month and year.
-   */
-  getDateState = () => {
-    const date = new Date();
-    
-    return {
-      dayOfWeek: date.getDay(),
-      day: date.getDate(),
-      month: date.getMonth(),
-      year: date.getFullYear(),
-    };
-  }
-
-  /**
-   * Sets the component state to reflect the current local date.
-   *
-   * @returns {void}
-   */
-  setDate = () => {
-    const date = new Date();
-    
-    this.setState(this.getDateState());
   }
 
   componentDidMount() {
@@ -80,12 +50,38 @@ export default class DateDisplay extends React.PureComponent {
     }
   }
 
+  /**
+   * Gets the current local time in a format to be put into state.
+   *
+   * @returns {{dayOfWeek: Number, day: Number, month: Number, year: Number}} the day index
+   *  in the week, day of month, month and year.
+   */
+  getDateState = () => {
+    const date = new Date();
+
+    return {
+      dayOfWeek: date.getDay(),
+      day: date.getDate(),
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    };
+  }
+
+  /**
+   * Sets the component state to reflect the current local date.
+   *
+   * @returns {void}
+   */
+  setDate = () => {
+    this.setState(this.getDateState());
+  }
+
   render() {
     const {
       dayOfWeek,
       day,
       month,
-      year
+      year,
     } = this.state;
 
     return (

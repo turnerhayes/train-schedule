@@ -33,6 +33,7 @@ export default function scheduleReducer(state = initialState, action) {
       const items = prepareScheduleItems(action.payload.schedule);
 
       if (!is(items, state.get('items'))) {
+        // eslint-disable-next-line no-param-reassign
         state = state.set('items', items);
       }
 
