@@ -5,8 +5,6 @@
 import { combineReducers } from 'redux-immutable';
 import { connectRouter } from 'connected-react-router/immutable';
 
-import globalReducer from 'containers/App/reducer';
-import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import scheduleReducer from './schedule';
 
 /*
@@ -25,8 +23,6 @@ export default function createReducer({
   injectedReducers,
 } = {}) {
   return connectRouter(history)(combineReducers({
-    global: globalReducer,
-    language: languageProviderReducer,
     schedule: scheduleReducer,
     ...injectedReducers,
   }));

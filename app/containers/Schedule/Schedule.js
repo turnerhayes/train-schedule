@@ -11,8 +11,18 @@ import * as selectors from 'selectors';
 import saga from './saga';
 
 function mapStateToProps(state) {
+  let scheduleItems = selectors.getSchedule(state);
+  let lastUpdated = selectors.getLastScheduleUpdate(state);
+
+  if (scheduleItems) {
+    scheduleItems = scheduleItems.sort(
+      (a, b) => a.get('ScheduledTime') - b.get('ScheduledTime')
+    );
+  }
+
   return {
-    scheduleItems: selectors.getSchedule(state),
+    scheduleItems,
+    lastUpdated,
   };
 }
 

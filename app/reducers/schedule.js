@@ -1,5 +1,4 @@
-import { Map, List, fromJS } from 'immutable';
-import moment from 'moment';
+import { Map, List, fromJS, is } from 'immutable';
 
 import {
   UPDATE_SCHEDULE,
@@ -15,7 +14,9 @@ function prepareScheduleItems(items) {
       (item) => {
         const transformedItem = {
           ...item,
-          ScheduledTime: moment.unix(item.ScheduledTime),
+          // ScheduledTime is a Unix timestamp (seconds); convert
+          // it to milliseconds (JS time value)
+          ScheduledTime: new Date(item.ScheduledTime * 1000),
         };
 
         delete transformedItem.TimeStamp;
@@ -29,8 +30,13 @@ function prepareScheduleItems(items) {
 export default function scheduleReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_SCHEDULE: {
-      return state.set('items', prepareScheduleItems(action.payload.schedule))
-        .set('lastUpdated', new Date());
+      const items = prepareScheduleItems(action.payload.schedule);
+
+      if (!is(items, state.get('items'))) {
+        state = state.set('items', items);
+      }
+
+      return state.set('lastUpdated', new Date());
     }
 
     default: return state;

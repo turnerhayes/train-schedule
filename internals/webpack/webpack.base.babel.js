@@ -104,9 +104,6 @@ module.exports = (options) => ({
       },
     }),
     new webpack.NamedModulesPlugin(),
-
-    // load `moment/locale/ja.js` and `moment/locale/it.js`
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|it/),
   ]),
   resolve: {
     modules: ['app', 'node_modules'],

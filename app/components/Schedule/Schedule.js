@@ -4,7 +4,18 @@ import { List } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 
-const CHECK_INTERVAL_IN_MILLISECONDS = 1000 * 10000/*60*/;
+import { formatTime } from 'utils/datetime';
+
+import 'styles/dotmatrix.css';
+
+// Check once per minute
+const CHECK_INTERVAL_IN_MILLISECONDS = 1000 * 60;
+
+const STATUS_BACKGROUND_COLORS = {
+  'All Aboard': 'orange',
+  'Now Boarding': 'lightgreen',
+  'Delayed': 'red',
+};
 
 const cellStyles = `
   border: 1px solid black;
@@ -14,6 +25,7 @@ const cellStyles = `
 
 const Table = styled.table`
   border-collapse: collapse;
+  width: 100%;
 `;
 
 const TableCell = styled.td`
@@ -24,16 +36,22 @@ const TableHeaderCell = styled.th`
   ${cellStyles}
 `;
 
+const TableBody = styled.tbody`
+  font-size: 1.3em;
+  text-transform: uppercase;
+`;
+
+const TableBodyRow = styled.tr`
+  background-color: ${(props) => STATUS_BACKGROUND_COLORS[props.status]}
+`
+
 class Schedule extends React.PureComponent {
   static propTypes = {
     scheduleItems: ImmutablePropTypes.listOf(
       ImmutablePropTypes.map
-    ).isRequired,
+    ),
     getSchedule: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    scheduleItems: List(),
+    lastUpdated: PropTypes.instanceOf(Date),
   }
 
   componentDidMount() {
@@ -52,24 +70,19 @@ class Schedule extends React.PureComponent {
   }
 
   renderEmpty = () => (
-    <tr>
-      <TableCell
-        colSpan={5}
-      >
-        No schedule found
-      </TableCell>
-    </tr>
+    <div>No schedule found</div>
   )
 
   renderItems = () => this.props.scheduleItems.map(
     (item, index) => (
-      <tr
+      <TableBodyRow
         key={index}
+        status={item.get('Status')}
       >
         <TableCell
           key="Time"
         >
-          {item.get('ScheduledTime').format('LT')}
+          {formatTime({ date: item.get('ScheduledTime') })}
         </TableCell>
         <TableCell
           key="Destination"
@@ -91,13 +104,17 @@ class Schedule extends React.PureComponent {
         >
           {item.get('Status')}
         </TableCell>
-      </tr>
+      </TableBodyRow>
     )
   ).toArray()
 
   render() {
     if (!this.props.scheduleItems) {
       return null;
+    }
+
+    if (this.props.scheduleItems.isEmpty()) {
+      return this.renderEmpty();
     }
 
     return (
@@ -132,16 +149,15 @@ class Schedule extends React.PureComponent {
               </TableHeaderCell>
             </tr>
           </thead>
-          <tbody>
-            {
-              this.props.scheduleItems.isEmpty() ?
-                this.renderEmpty() :
-                this.renderItems()
-            }
-            <tr>
-            </tr>
-          </tbody>
+          <TableBody
+            className="dotmatrix"
+          >
+            {this.renderItems()}
+          </TableBody>
         </Table>
+        <figcaption>
+          Last updated: {formatTime({ date: this.props.lastUpdated })}
+        </figcaption>
       </div>
     );
   }

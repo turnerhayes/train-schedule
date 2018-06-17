@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "dotmatrix";
+  src: url("../fonts/dotmatrix/dotmatrix.woff2") format("woff2"),
+    url("../fonts/dotmatrix/dotmatrix.woff") format("woff"),
+    url("../fonts/dotmatrix/dotmatrix.ttf") format("truetype");
+}
+
+.dotmatrix {
+	font-family: dotmatrix, Sans Serif;
+}
