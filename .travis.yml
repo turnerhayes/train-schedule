@@ -4,7 +4,7 @@ node_js:
   - 8
 
 script:
-  - npm run test
+  - npm run test -- --runInBand --no-cache
   - npm run build
 
 before_install:
