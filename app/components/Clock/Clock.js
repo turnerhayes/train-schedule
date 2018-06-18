@@ -22,6 +22,7 @@ export default class Clock extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    // istanbul ignore next
     if (this.intervalHandle) {
       clearInterval(this.intervalHandle);
     }

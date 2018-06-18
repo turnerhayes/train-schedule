@@ -38,6 +38,21 @@ const CurrentTimeLabel = styled.div`
 `;
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  static propTypes = {
+    loading: PropTypes.bool,
+    error: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.bool,
+    ]),
+    repos: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.bool,
+    ]),
+    onSubmitForm: PropTypes.func,
+    username: PropTypes.string,
+    onChangeUsername: PropTypes.func,
+  }
+
   render() {
     return (
       <article>
@@ -65,20 +80,5 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     );
   }
 }
-
-HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
-  repos: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.bool,
-  ]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
-};
 
 export default HomePage;

@@ -67,6 +67,7 @@ class Schedule extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    // istanbul ignore else
     if (this.scheduleInterval) {
       clearInterval(this.scheduleInterval);
     }

@@ -14,6 +14,7 @@ function mapStateToProps(state) {
   let scheduleItems = selectors.getSchedule(state);
   const lastUpdated = selectors.getLastScheduleUpdate(state);
 
+  // istanbul ignore else
   if (scheduleItems) {
     scheduleItems = scheduleItems.sort(
       (a, b) => a.get('ScheduledTime') - b.get('ScheduledTime')

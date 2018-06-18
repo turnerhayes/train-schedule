@@ -15,21 +15,6 @@ const DAY_NAMES = [
   'Saturday',
 ];
 
-/*
- * Left-pads the number with zeros, up to 2 digits wide.
- *
- * @param {Number} num - the number to pad
- *
- * @returns {String} the padded number
- */
-function zeroPad(num) {
-  if (num >= 10) {
-    return `${num}`;
-  }
-
-  return `0${num}`;
-}
-
 export default class DateDisplay extends React.PureComponent {
   constructor(...args) {
     super(...args);
@@ -45,6 +30,7 @@ export default class DateDisplay extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    // istanbul ignore else
     if (this.intervalHandle) {
       clearInterval(this.intervalHandle);
     }
@@ -93,7 +79,7 @@ export default class DateDisplay extends React.PureComponent {
         </div>
         <div>
           {/* month is 0-based */}
-          {[zeroPad(month + 1), zeroPad(day), year].join('-')}
+          {[month + 1, day, year].join('-')}
         </div>
       </div>
     );

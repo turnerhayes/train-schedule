@@ -2,23 +2,17 @@
 
 import Papa from 'papaparse';
 
-import storedContent from './Departures.csv';
-
 function getData() {
-  if (navigator.onLine) {
-    return window.fetch('/api/schedule/')
-      .then(
-        (response) => {
-          if (!response.ok || response.status >= 300) {
-            throw new Error(response.statusText);
-          }
-
-          return response.text();
+  return window.fetch('/api/schedule/')
+    .then(
+      (response) => {
+        if (!response.ok || response.status >= 300) {
+          throw new Error(response.statusText);
         }
-      );
-  }
 
-  return Promise.resolve(storedContent);
+        return response.text();
+      }
+    );
 }
 
 

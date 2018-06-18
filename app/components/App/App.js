@@ -10,7 +10,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
-import HomePage from 'containers/HomePage/Loadable';
+import HomePage from 'components/HomePage';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);

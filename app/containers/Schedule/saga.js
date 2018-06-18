@@ -8,17 +8,13 @@ import {
   getSchedule,
 } from 'api/schedule';
 
-function* getScheduleSaga() {
+export function* getScheduleSaga() {
   const schedule = yield call(getSchedule);
   yield put(updateSchedule({ schedule }));
 }
 
-function* watchForGetSchedule() {
-  yield takeEvery(GET_SCHEDULE, getScheduleSaga);
-}
-
 export default function* rootSaga() {
   yield all([
-    call(watchForGetSchedule),
+    takeEvery(GET_SCHEDULE, getScheduleSaga),
   ]);
 }
